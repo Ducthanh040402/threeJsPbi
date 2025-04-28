@@ -1,13 +1,23 @@
 {
     "dataRoles": [
         {
-            "displayName": "Category Data",
+            "displayName": "Index",
             "name": "category",
             "kind": "Grouping"
         },
         {
-            "displayName": "Measure Data",
-            "name": "measure",
+            "displayName": "Coordinates",
+            "name": "coordinates",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "3D Topological",
+            "name": "3d_topology",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Node Field",
+            "name": "node_field",
             "kind": "Measure"
         }
     ],
@@ -42,7 +52,7 @@
                         "fill": {}
                     }
                 },
-                 "fontSize": {
+                "fontSize": {
                     "type": {
                         "formatting": {
                             "fontSize": true
@@ -60,14 +70,41 @@
                         "in": "category"
                     },
                     "dataReductionAlgorithm": {
-                        "top": {}
+                        "window": {
+                            "count": 30000
+                        }
                     }
                 },
                 "values": {
                     "select": [
                         {
-                            "bind": {
-                                "to": "measure"
+                            "for": {
+                                "in": "coordinates"
+                            },
+                            "dataReductionAlgorithm": {
+                                "window": {
+                                    "count": 30000
+                                }
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "3d_topology"
+                            },
+                            "dataReductionAlgorithm": {
+                                "window": {
+                                    "count": 30000
+                                }
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "node_field"
+                            },
+                            "dataReductionAlgorithm": {
+                                "window": {
+                                    "count": 30000
+                                }
                             }
                         }
                     ]

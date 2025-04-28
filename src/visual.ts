@@ -30,10 +30,12 @@ import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel
 import "./../style/visual.less";
 import { Scene } from "./scene";
 import { VisualFormattingSettingsModel } from "./settings";
+import { ProcessDataView } from "./tools/utils_process_data";
 
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
+import DataView = powerbi.DataView;
 
 export class Visual implements IVisual {
     private target: HTMLElement;
@@ -42,6 +44,7 @@ export class Visual implements IVisual {
     private scene: Scene;
     private animationFrameId: number;
     private resizeObserver: ResizeObserver;
+    private processDataView: ProcessDataView;
 
     constructor(options: VisualConstructorOptions) {
         this.formattingSettingsService = new FormattingSettingsService();
@@ -54,6 +57,7 @@ export class Visual implements IVisual {
         });
         this.resizeObserver.observe(this.target);
 
+        // Start animation loop
         this.animate();
     }
 
@@ -74,18 +78,35 @@ export class Visual implements IVisual {
             options.dataViews
         );
 
-        // Handle data updates here
         if (options.dataViews && options.dataViews[0]) {
             const dataView = options.dataViews[0];
-            // Process FEA data and update the scene
-            // This is where you'll implement your data processing logic
+            this.processDataView = new ProcessDataView(dataView);
+            this.processData();
+        }
+    }
+
+    private processData(): void {
+        if (!this.processDataView) return;
+
+        const nodes = this.processDataView.getNode();
+        const elements = this.processDataView.getElement();
+        const field_values = this.processDataView.getField();
+        // Update the mesh with the processed data
+        if (nodes && elements && this.scene) {
+            this.scene.updateData({ nodes, elements, field_values });
         }
     }
 
     public destroy(): void {
-        cancelAnimationFrame(this.animationFrameId);
-        this.resizeObserver.disconnect();
-        this.scene.destroy();
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
+        if (this.scene) {
+            this.scene.destroy();
+        }
     }
 
     /**

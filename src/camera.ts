@@ -16,7 +16,7 @@ export class Camera {
         this.camera = new THREE.PerspectiveCamera(
             75,
             this.container.clientWidth / this.container.clientHeight,
-            0.1,
+            1,
             1000
         );
         this.camera.position.set(3, 3, 3);
@@ -34,6 +34,25 @@ export class Camera {
             MIDDLE: THREE.MOUSE.DOLLY,
             RIGHT: null // Disable right-click
         };
+    }
+
+    public setViewFromAxis(axis: 'x' | 'y' | 'z'): void {
+        const distance = 5;
+        switch (axis) {
+            case 'x':
+                this.camera.position.set(distance, 0, 0);
+                break;
+            case 'y':
+                this.camera.position.set(0, distance, 0);
+                break;
+            case 'z':
+                this.camera.position.set(0, 0, distance);
+                break;
+        }
+        this.camera.lookAt(0, 0, 0);
+        if (this.controls) {
+            this.controls.update();
+        }
     }
 
     public getCamera(): THREE.PerspectiveCamera {

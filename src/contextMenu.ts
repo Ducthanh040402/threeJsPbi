@@ -25,23 +25,46 @@ export class ContextMenu {
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         `;
 
-        const fitViewButton = document.createElement('button');
-        fitViewButton.textContent = 'Fit View';
-        fitViewButton.style.cssText = `
-            display: block;
-            width: 100%;
-            padding: 5px 10px;
-            border: none;
-            background: none;
-            text-align: left;
-            cursor: pointer;
-        `;
-        fitViewButton.onclick = () => {
-            this.scene.getCamera().fitView();
-            this.hideMenu();
-        };
+        // Add view direction buttons
+        const viewButtons = [
+            { text: 'View X', axis: 'x', color: '#ff4444' },
+            { text: 'View Y', axis: 'y', color: '#44ff44' },
+            { text: 'View Z', axis: 'z', color: '#4444ff' },
+            { text: 'Fit View', action: 'fit' }
+        ];
 
-        this.menu.appendChild(fitViewButton);
+        viewButtons.forEach(button => {
+            const menuItem = document.createElement('button');
+            menuItem.textContent = button.text;
+            menuItem.style.cssText = `
+                display: block;
+                width: 100%;
+                padding: 5px 10px;
+                margin: 2px 0;
+                border: none;
+                background: none;
+                text-align: left;
+                cursor: pointer;
+                color: ${button.color || 'black'};
+                font-weight: ${button.color ? 'bold' : 'normal'};
+            `;
+            menuItem.onmouseover = () => {
+                menuItem.style.backgroundColor = '#f0f0f0';
+            };
+            menuItem.onmouseout = () => {
+                menuItem.style.backgroundColor = 'transparent';
+            };
+            menuItem.onclick = () => {
+                if (button.axis) {
+                    this.scene.getCamera().setViewFromAxis(button.axis as 'x' | 'y' | 'z');
+                } else if (button.action === 'fit') {
+                    this.scene.getCamera().fitView();
+                }
+                this.hideMenu();
+            };
+            this.menu.appendChild(menuItem);
+        });
+
         document.body.appendChild(this.menu);
     }
 
