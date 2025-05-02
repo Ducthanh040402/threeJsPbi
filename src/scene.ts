@@ -138,16 +138,6 @@ export class Scene {
             event.stopPropagation();
         });
 
-        container.addEventListener('mouseup', (event: MouseEvent) => {
-            console.log('mouseup on corner axes');
-            if (isMouseDown && Date.now() - mouseDownTime < 200) { // Check if it's a quick click (less than 200ms)
-                this.onCornerAxesClick(event);
-            }
-            isMouseDown = false;
-            event.preventDefault();
-            event.stopPropagation();
-        });
-
         container.addEventListener('mousemove', this.onCornerAxesMouseMove.bind(this));
 
         // Prevent context menu
@@ -157,41 +147,7 @@ export class Scene {
         });
     }
 
-    private onCornerAxesClick(event: MouseEvent): void {
-        console.log('onCornerAxesClick');
 
-        // Calculate mouse position relative to the viewport
-        const rect = this.cornerAxesRenderer.domElement.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        // Convert to normalized device coordinates (-1 to +1)
-        this.mouse.x = (x / rect.width) * 2 - 1;
-        this.mouse.y = -(y / rect.height) * 2 + 1;
-
-        // Update the picking ray with the camera and mouse position
-        this.raycaster.setFromCamera(this.mouse, this.cornerAxesCamera);
-
-        // Calculate objects intersecting the picking ray
-        const intersects = this.raycaster.intersectObjects(this.cornerAxes.children, true);
-        console.log('Intersects:', intersects);
-
-        if (intersects.length > 0) {
-            const object = intersects[0].object;
-            console.log('Clicked object:', object.name);
-            switch (object.name) {
-                case 'x-axis':
-                    this.camera.setViewFromAxis('x');
-                    break;
-                case 'y-axis':
-                    this.camera.setViewFromAxis('y');
-                    break;
-                case 'z-axis':
-                    this.camera.setViewFromAxis('z');
-                    break;
-            }
-        }
-    }
 
     private onCornerAxesMouseMove(event: MouseEvent): void {
         // console.log('onCornerAxesMouseMove');

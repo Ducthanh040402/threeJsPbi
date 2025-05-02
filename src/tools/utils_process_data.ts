@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import powerbi from 'powerbi-visuals-api';
 import DataView = powerbi.DataView;
 
+import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
+import IViewport = powerbi.IViewport;
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+import { VisualFormattingSettingsModel } from "../settings";
 export interface Node {
     index: number;
     position: THREE.Vector3;
@@ -12,7 +16,6 @@ export interface Element {
     nodes: Node[];
 }
 
-
 export class ProcessDataView {
     private nodes: number[][];
     private elements: number[][];
@@ -20,10 +23,9 @@ export class ProcessDataView {
     private dataView: DataView;
 
     constructor(dataView: DataView) {
-        [this.nodes, this.elements,this.field_values] = this.transfromDataToNodeAndElements(dataView)
+        [this.nodes, this.elements, this.field_values] = this.transfromDataToNodeAndElements(dataView)
 
     }
-
 
     public getNode() {
         return this.nodes;
@@ -34,8 +36,8 @@ export class ProcessDataView {
     public getField() {
         return this.field_values;
     }
-    public transfromDataToNodeAndElements(dataView: DataView): [number[][],number[][], number[]] {
-        let ver:[] = [];
+    public transfromDataToNodeAndElements(dataView: DataView): [number[][], number[][], number[]] {
+        let ver: [] = [];
         let element_model: [] = [];
         var coordinates = dataView.categorical?.values[0].values;
         var elements = dataView.categorical.values[1].values;
@@ -63,8 +65,12 @@ export class ProcessDataView {
         // }
 
         console.log("node-ver-----", ver);
-        return [vertices, ele,field_node];
+        return [vertices, ele, field_node];
 
+    }
+
+    public async update(options: VisualUpdateOptions, applicationSettings: VisualFormattingSettingsModel) {
+        const viewport: IViewport = options.viewport;
     }
 }
 

@@ -12,12 +12,17 @@
         },
         {
             "displayName": "3D Topological",
-            "name": "3d_topology",
+            "name": "topology3d",
             "kind": "Measure"
         },
         {
             "displayName": "Node Field",
-            "name": "node_field",
+            "name": "nodeFieldValues",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Component Name",
+            "name": "componentTag",
             "kind": "Measure"
         }
     ],
@@ -89,7 +94,7 @@
                         },
                         {
                             "for": {
-                                "in": "3d_topology"
+                                "in": "topology3d"
                             },
                             "dataReductionAlgorithm": {
                                 "window": {
@@ -99,7 +104,17 @@
                         },
                         {
                             "for": {
-                                "in": "node_field"
+                                "in": "nodeFieldValues"
+                            },
+                            "dataReductionAlgorithm": {
+                                "window": {
+                                    "count": 30000
+                                }
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "componentTag"
                             },
                             "dataReductionAlgorithm": {
                                 "window": {
