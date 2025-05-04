@@ -17,7 +17,7 @@
         },
         {
             "displayName": "Node Field",
-            "name": "nodeFieldValues",
+            "name": "nodalFieldValue",
             "kind": "Measure"
         },
         {
@@ -104,7 +104,7 @@
                         },
                         {
                             "for": {
-                                "in": "nodeFieldValues"
+                                "in": "nodalFieldValue"
                             },
                             "dataReductionAlgorithm": {
                                 "window": {
