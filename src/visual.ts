@@ -36,6 +36,7 @@ import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructor
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import DataView = powerbi.DataView;
+import { Component } from "./component";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
@@ -72,7 +73,7 @@ export class Visual implements IVisual {
         this.scene.update();
     }
 
-    public update(options: VisualUpdateOptions) {
+    public async update(options: VisualUpdateOptions) {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(
             VisualFormattingSettingsModel,
             options.dataViews
@@ -80,18 +81,17 @@ export class Visual implements IVisual {
 
         if (options.dataViews && options.dataViews[0]) {
             const dataView = options.dataViews[0];
-            this.processDataView = new ProcessDataView();
-            const new_com = this.processDataView.transfromDataToNodeAndElements(dataView)
-            this.processData();
+            this.processDataView = new ProcessDataView(dataView);
+            const components = await this.processDataView.transfromDataToNodeAndElements(dataView);
+            this.processData(components);
         }
     }
 
-    private processData(): void {
+    private processData(components: Component[]): void {
         if (!this.processDataView) return;
-
-        const nodes = this.processDataView.getNode();
-        const elements = this.processDataView.getElement();
-        const field_values = this.processDataView.getField();
+        const nodes = components[0].coordinates;
+        const elements = components[0].topology3d;
+        const field_values = components[0].fieldValues;
         // Update the mesh with the processed data
         if (nodes && elements && this.scene) {
             this.scene.updateData({ nodes, elements, field_values });

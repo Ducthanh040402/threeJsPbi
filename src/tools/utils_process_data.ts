@@ -30,6 +30,9 @@ export class ProcessDataView {
     private dataView: DataView;
     private processData: ProcessBase64Data = new ProcessBase64Data;
 
+    constructor(dataView: DataView) {
+        this.dataView = dataView;
+    }
 
     public getNode() {
         return this.nodes;
@@ -54,6 +57,7 @@ export class ProcessDataView {
         const components = await this.processData.processModelData(DataTypeHelper.ComponentDataTypes, dataView.categorical.values, meshDataTypeToIndex);
 
         console.log("processData----------")
+ 
         return components
     }
 }

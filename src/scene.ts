@@ -214,17 +214,17 @@ export class Scene {
         var new_ele = [];
         var new_field = [];
         const colors = [];
-        const minValue = Math.min(...field_values);
-        const maxValue = Math.max(...field_values);
+        // const minValue = Math.min(...field_values);
+        // const maxValue = Math.max(...field_values);
 
         for (let i = 0; i < positions.length; i++) {
             var [x, y, z] = positions[i]
             // var [f] = field_values[i]
             new_pos.push(x, y, z)
             // new_field.push(f)
-            const normalizedValue = normalize(field_values[i], minValue, maxValue);
-            const color = jetColorMap(normalizedValue);
-            colors.push(color.r, color.g, color.b);
+            // const normalizedValue = normalize(field_values[i], minValue, maxValue);
+            // const color = jetColorMap(normalizedValue);
+            // colors.push(color.r, color.g, color.b);
         }
         for (let i = 0; i < indices.length; i++) {
             var [a, b, c] = indices[i]
