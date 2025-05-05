@@ -23,7 +23,7 @@ export class ProcessBase64Data {
     ): Promise<Component[]> {
         let components: Component[] = [];
         // add highlight location if needed
-        debugger
+
         const tagRowIndex = mdu.getTagToRowIndices(modelDatas, meshDataTypeByIndex);
         for (let [tag, rowIndices] of tagRowIndex) {
             let componentArgs = {};
@@ -123,7 +123,7 @@ export class ProcessBase64Data {
             let indices: number[] = [];
             const img = new Image();
             img.src = base64String;
-            debugger
+      
 
             // Set up the onload handler to process the image once it's loaded
             img.onload = () => {

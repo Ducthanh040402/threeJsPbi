@@ -80,10 +80,9 @@ export class Visual implements IVisual {
 
         if (options.dataViews && options.dataViews[0]) {
             const dataView = options.dataViews[0];
-            this.processDataView = new ProcessDataView(dataView);
+            this.processDataView = new ProcessDataView();
+            const new_com = this.processDataView.transfromDataToNodeAndElements(dataView)
             this.processData();
-            this.processDataView.update(options, this.formattingSettings)
-            console.log(this.scene.getRenderer().info)
         }
     }
 

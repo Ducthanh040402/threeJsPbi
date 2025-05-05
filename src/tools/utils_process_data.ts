@@ -11,6 +11,8 @@ import IViewport = powerbi.IViewport;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { VisualFormattingSettingsModel } from "../settings";
 import { DataTypeHelper } from './data_type';
+import { Component } from '../component';
+
 export interface Node {
     index: number;
     position: THREE.Vector3;
@@ -27,10 +29,7 @@ export class ProcessDataView {
     private field_values: number[];
     private dataView: DataView;
     private processData: ProcessBase64Data = new ProcessBase64Data;
-    constructor(dataView: DataView) {
-        this.transfromDataToNodeAndElements(dataView)
 
-    }
 
     public getNode() {
         return this.nodes;
@@ -41,13 +40,13 @@ export class ProcessDataView {
     public getField() {
         return this.field_values;
     }
-    public async transfromDataToNodeAndElements(dataView: DataView) {
+    public async transfromDataToNodeAndElements(dataView: DataView): Promise<Component[]> {
         let ver: [] = [];
         let element_model: [] = [];
         var coordinates = dataView.categorical?.values[0].values;
         var elements = dataView.categorical.values[1].values;
         var node_field = dataView.categorical.values[2].values;
-        debugger
+
         const [
             meshDataTypeToIndex,
             solutionDataTypeToFieldToIndex
@@ -55,12 +54,7 @@ export class ProcessDataView {
         const components = await this.processData.processModelData(DataTypeHelper.ComponentDataTypes, dataView.categorical.values, meshDataTypeToIndex);
 
         console.log("processData----------")
-
-
-    }
-
-    public async update(options: VisualUpdateOptions, applicationSettings: VisualFormattingSettingsModel) {
-        const viewport: IViewport = options.viewport;
+        return components
     }
 }
 

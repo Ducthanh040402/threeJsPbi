@@ -38,7 +38,7 @@ export class Mesh {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
     }
 
-    public updateGeometry(positions: any, indices: any,field_values:any): void {
+    public updateGeometry(positions: any, indices: any, field_values: any): void {
         // Xóa geometry cũ
         if (this.geometry) {
             this.geometry.dispose();
@@ -58,7 +58,6 @@ export class Mesh {
         // Cập nhật geometry với dữ liệu mới
         this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(new_pos), 3));
         this.geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(new_ele), 1));
-        this.geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
         // Cập nhật geometry cho mesh
         this.mesh.geometry = this.geometry;
 
